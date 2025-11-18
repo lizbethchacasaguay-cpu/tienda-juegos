@@ -39,7 +39,7 @@ async function fetchDeals(page = 0, storeID = "") {
         return data;
     } catch (err) {
         console.error(err);
-        setStatus("❌ Error al cargar datos.");
+        setStatus("Error al cargar datos.");
         return [];
     }
 }
@@ -50,20 +50,22 @@ function renderGames(games, reset = false) {
 
     games.forEach(game => {
         const card = document.createElement("div");
-        card.className = "bg-white p-4 rounded shadow hover:shadow-lg transition";
+card.className = "bg-white rounded-lg shadow-md overflow-hidden";
+card.innerHTML = ` <img src="${game.thumb}" class="w-full h-32 object-cover" />
 
-        card.innerHTML = `
-            <img src="${game.thumb}" class="w-full h-40 object-cover rounded" />
-            <h3 class="mt-2 font-bold">${game.title}</h3>
-            <p class="text-green-700 font-semibold">Oferta: $${game.salePrice}</p>
-            <p class="text-gray-600 text-sm">Precio normal: $${game.normalPrice}</p>
+    <div class="p-3">
+        <h3 class="text-sm font-semibold truncate">${game.title}</h3>
 
-            <button 
-                class="mt-3 bg-blue-600 text-white px-3 py-1 rounded viewDetail"
-                data-id="${game.dealID}">
-                Ver detalle
-            </button>
-        `;
+        <p class="text-xs text-gray-500">Normal: $${game.normalPrice}</p>
+        <p class="text-xs text-green-600 font-semibold mb-2">Oferta: $${game.salePrice}</p>
+
+        <button onclick="openModal('${game.dealID}')"
+            class="bg-blue-600 text-white w-full py-1 px-2 rounded text-xs hover:bg-blue-700">
+            Ver más
+        </button>
+    </div>
+`;
+
 
         grid.appendChild(card);
     });
@@ -176,9 +178,9 @@ document.addEventListener("click", (e) => {
     }
 });
 
-// ------------------------------
+
 // CARGA INICIAL
-// ------------------------------
+
 (async () => {
     const games = await fetchDeals();
     renderGames(games);
