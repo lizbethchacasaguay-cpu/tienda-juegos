@@ -1,3 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* 🚨 NECESARIO PARA TAILWIND V4 🚨
+   Indica dónde buscar las clases (tus archivos HTML/JS) */
+@source "../public";

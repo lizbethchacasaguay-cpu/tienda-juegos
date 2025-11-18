@@ -1,69 +1,70 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tienda de Juegos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameZone Store</title>
     <link rel="stylesheet" href="./output.css">
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-800 text-white font-sans">
 
     <!-- HEADER -->
-    <header class="bg-white shadow p-4">
-        <h1 class="text-2xl font-bold">Nombre de la Tienda - Videojuegos</h1>
+    <header class="bg-gray-900 shadow-lg p-4 sm:p-6">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+            
+            <div>
+                <h1 class="text-3xl font-bold">GameZone Store</h1>
+                <p class="text-sm text-gray-400">Catálogo de videojuegos</p>
+            </div>
 
-        <div class="flex gap-2 mt-3">
-            <input id="searchInput" type="text" placeholder="Buscar juego..."
-                class="border p-2 rounded w-full">
+            <div class="flex items-center gap-2 w-full sm:w-auto mt-4 sm:mt-0">
+                <input id="searchInput" type="text" placeholder="Buscar videojuego..."
+                    class="bg-gray-700 p-2 rounded-md text-white placeholder-gray-400 w-full sm:w-64 focus:ring-2 focus:ring-blue-500">
 
-            <button id="searchBtn"
-                class="bg-blue-600 text-white px-4 py-2 rounded">
-                Buscar
-            </button>
+                <button id="searchBtn"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">
+                    Buscar
+                </button>
+            </div>
         </div>
-    </header>
 
-    <!-- CONTENIDO -->
-    <main class="p-4">
-        <!-- FILTROS -->
-        <div class="flex gap-3 mb-4">
-            <select id="storeFilter" class="border p-2 rounded">
+        <div class="container mx-auto flex flex-wrap justify-end gap-3 mt-4">
+            <select id="storeFilter" class="bg-gray-700 p-2 rounded text-white">
                 <option value="">Todas las tiendas</option>
                 <option value="1">Steam</option>
                 <option value="7">Epic Games</option>
             </select>
 
-            <select id="sortBy" class="border p-2 rounded">
+            <select id="sortBy" class="bg-gray-700 p-2 rounded text-white">
                 <option value="">Ordenar...</option>
                 <option value="price">Precio oferta</option>
                 <option value="normalPrice">Precio normal</option>
             </select>
         </div>
+    </header>
 
-        <!-- ESTADO (cargando / error) -->
-        <p id="status" class="text-gray-600 mb-2"></p>
+    <!-- CONTENIDO -->
+    <main class="container mx-auto p-6">
 
-        <!-- GRID DE JUEGOS -->
-        <div id="grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            
-        </div>
+        <h2 class="text-2xl font-semibold mb-6 text-gray-200">Videojuegos destacados</h2>
 
+        <p id="status" class="text-gray-400 text-center mb-4"></p>
 
+        <!-- GRID -->
+        <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
 
-
-        <!-- BOTÓN VER MÁS -->
-        <div class="text-center mt-6">
-            <button id="loadMore" class="bg-gray-800 text-white px-4 py-2 rounded">
+        <div class="text-center mt-8">
+            <button id="loadMore"
+                class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-md transition">
                 Ver más
             </button>
         </div>
     </main>
 
-    <!-- MODAL PARA DETALLES -->
-    <div id="modal"
-        class="hidden fixed inset-0 bg-black bg-opacity-40 justify-center items-center">
-        <div id="modalContent" class="bg-white p-6 rounded shadow w-11/12 md:w-2/3"></div>
+    <!-- MODAL -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4">
+        <div id="modalContent" class="bg-gray-800 p-6 text-white rounded-lg max-w-lg w-full"></div>
     </div>
 
     <script src="./script.js"></script>
