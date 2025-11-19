@@ -1,6 +1,7 @@
 // Referencias a elementos del DOM
 const grid = document.getElementById("grid");
 const statusEl = document.getElementById("status");
+const spinner = document.getElementById("spinner");
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
 const storeFilter = document.getElementById("storeFilter");
@@ -26,6 +27,7 @@ function setStatus(msg) {
 }
 
 // 2️ Llamar a la API CheapShark (función faltante en tu código)
+spinner.classList.remove("hidden");
 async function fetchDeals(page = 0, storeID = "") {
     try {
         setStatus("Cargando juegos...");
@@ -36,6 +38,8 @@ async function fetchDeals(page = 0, storeID = "") {
         if (!res.ok) throw new Error("Error al conectar con la API");
 
         const data = await res.json();
+        spinner.classList.add("hidden");
+
         setStatus("");
         return data;
     } catch (err) {

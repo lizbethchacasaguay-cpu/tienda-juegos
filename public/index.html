@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameZone Store</title>
     <link rel="stylesheet" href="./output.css">
+    <link rel="icon" type="image/png" href="./favicon-32x32.png">
 </head>
 
 <body class="bg-gray-800 text-white font-sans">
@@ -50,6 +51,16 @@
         <h2 class="text-2xl font-semibold mb-6 text-gray-200">Videojuegos destacados</h2>
 
         <p id="status" class="text-gray-400 text-center mb-4"></p>
+        <!-- MENSAJE DE ERROR -->
+         <p id="errorMsg" class="hidden text-red-400 font-bold text-center mt-2">
+             ❌ Error al conectar con la API. Intenta nuevamente.
+        </p>
+
+        <!-- SPINNER DE CARGA -->
+         <div id="spinner" class="hidden flex justify-center my-6">
+            <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+
 
         <!-- GRID -->
         <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
