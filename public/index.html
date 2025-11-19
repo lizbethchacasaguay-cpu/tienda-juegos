@@ -9,9 +9,7 @@
 </head>
 
 <body class="bg-gray-800 text-white font-sans">
-
-    <!-- HEADER -->
-    <header class="bg-gray-900 shadow-lg p-4 sm:p-6">
+<header class="bg-gray-900 shadow-lg p-4 sm:p-6">
         <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
             
             <div>
@@ -45,24 +43,27 @@
         </div>
     </header>
 
-    <!-- CONTENIDO -->
-    <main class="container mx-auto p-6">
+<main class="container mx-auto p-6">
 
         <h2 class="text-2xl font-semibold mb-6 text-gray-200">Videojuegos destacados</h2>
 
         <p id="status" class="text-gray-400 text-center mb-4"></p>
-        <!-- MENSAJE DE ERROR -->
+    
          <p id="errorMsg" class="hidden text-red-400 font-bold text-center mt-2">
              ❌ Error al conectar con la API. Intenta nuevamente.
         </p>
+        <p id="noResults" class="hidden text-gray-300 text-center font-semibold mt-4">
+            ❗No se encontraron resultados para tu búsqueda.
+        </p>
 
-        <!-- SPINNER DE CARGA -->
+
+    
          <div id="spinner" class="hidden flex justify-center my-6">
             <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
 
 
-        <!-- GRID -->
+    
         <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
 
         <div class="text-center mt-8">
@@ -73,11 +74,17 @@
         </div>
     </main>
 
-    <!-- MODAL -->
-    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4">
-        <div id="modalContent" class="bg-gray-800 p-6 text-white rounded-lg max-w-lg w-full"></div>
-    </div>
+    
+    <div id="modal"
+    class="hidden fixed inset-0 bg-black bg-opacity-75 
+           flex justify-center items-center z-50 
+           p-4 sm:p-6">
 
+    <div id="modalContent" 
+     class="bg-gray-800 text-white p-6 rounded-lg shadow-xl 
+            w-full max-w-md md:max-w-lg 
+            max-h-[80vh] overflow-y-auto">
+        </div>
     <script src="./script.js"></script>
 </body>
 </html>

@@ -1,6 +1,8 @@
-// Referencias a elementos del DOM
+
 const grid = document.getElementById("grid");
 const statusEl = document.getElementById("status");
+const errorMsg = document.getElementById("errorMsg");
+const noResults = document.getElementById("noResults");
 const spinner = document.getElementById("spinner");
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
@@ -10,28 +12,24 @@ const loadMoreBtn = document.getElementById("loadMore");
 const modal = document.getElementById("modal");
 const modalContent = document.getElementById("modalContent");
 
-// Variables
+
 let page = 0;
-const pageSize = 20; // Tamaño de página ajustado para la API de CheapShark
+const pageSize = 20; 
 let currentStore = "";
 let currentSort = "";
 let isSearching = false;
-
-// ------------------------------
-// FUNCIONES PRINCIPALES
-// ------------------------------
-
-// 1️ Mostrar estado (Cargando, Error, etc.)
-function setStatus(msg) {
+ function setStatus(msg) {
     statusEl.textContent = msg;
 }
 
-// 2️ Llamar a la API CheapShark (función faltante en tu código)
+
 spinner.classList.remove("hidden");
+errorMsg.classList.add("hidden");
+
 async function fetchDeals(page = 0, storeID = "") {
     try {
         setStatus("Cargando juegos...");
-        // Usamos &pageSize=20, por eso la variable pageSize en la configuración es 20.
+        
         const url = `https://www.cheapshark.com/api/1.0/deals?pageNumber=${page}&pageSize=${pageSize}${storeID ? `&storeID=${storeID}` : ""}`;
         const res = await fetch(url);
 
@@ -44,19 +42,21 @@ async function fetchDeals(page = 0, storeID = "") {
         return data;
     } catch (err) {
         console.error(err);
+        spinner.classList.add("hidden");
         setStatus("Error al cargar datos.");
+        errorMsg.classList.remove("hidden");
         return [];
     }
 }
 
-// 3️ Renderizar tarjetas de juegos (Código estilizado y corregido)
+
 function renderGames(games, reset = false) {
     if (reset) grid.innerHTML = "";
 
     games.forEach(game => {
         const card = document.createElement("div");
         
-        // Estilos oscuros de Tailwind para la tarjeta
+        
         card.className = "bg-gray-700 rounded-xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300";
         
         card.innerHTML = `<img src="${game.thumb}" class="w-full h-40 object-cover" />
@@ -87,7 +87,7 @@ function renderGames(games, reset = false) {
     });
 }
 
-// 4️ Abrir modal con más información (Código estilizado y corregido)
+
 async function openModal(id) {
     modal.classList.remove("hidden");
     modalContent.innerHTML = "<p class='text-center text-lg text-gray-400'>Cargando detalles...</p>";
@@ -96,7 +96,7 @@ async function openModal(id) {
         const res = await fetch(`https://www.cheapshark.com/api/1.0/deals?id=${id}`);
         const data = await res.json();
 
-        // Estilos oscuros para el contenido del modal
+        
         modalContent.innerHTML = `
             <h2 class="text-3xl font-extrabold mb-4 text-blue-400">${data.gameInfo.name}</h2>
 
@@ -126,14 +126,14 @@ async function openModal(id) {
     }
 }
 
-// 5️ Cerrar modal (El código ya es correcto)
+
 modal.addEventListener("click", (e) => {
     if (e.target.classList.contains("closeModal") || e.target === modal) {
         modal.classList.add("hidden");
     }
 });
 
-// 6️ Ordenar juegos por precio (El código ya es correcto)
+
 function sortGames(games, criteria) {
     if (criteria === "price") {
         return games.sort((a, b) => parseFloat(a.salePrice) - parseFloat(b.salePrice));
@@ -144,13 +144,11 @@ function sortGames(games, criteria) {
     return games;
 }
 
-// ------------------------------
-// EVENTOS (El código ya es correcto)
-// ------------------------------
+ searchBtn.addEventListener("click", async () => {
+    spinner.classList.remove("hidden");
+    noResults.classList.add("hidden"); 
 
-// Botón BUSCAR
-searchBtn.addEventListener("click", async () => {
-    // ... (Tu código de búsqueda que ya tenías)
+
     const text = searchInput.value.trim();
 
     if (text.length === 0) return;
@@ -158,12 +156,13 @@ searchBtn.addEventListener("click", async () => {
     setStatus("Buscando...");
     isSearching = true;
 
-    const res = await fetch(`https://www.cheapshark.com/api/1.0/games?title=${text}&limit=20`);
-    const data = await res.json();
+    try {
+        const res = await fetch(`https://www.cheapshark.com/api/1.0/games?title=${text}&limit=20`);
+        const data = await res.json();
 
     setStatus("");
 
-    // Convertir formato a tarjetas compatibles
+    
     const games = data.map(g => ({
         title: g.external,
         thumb: g.thumb,
@@ -171,43 +170,60 @@ searchBtn.addEventListener("click", async () => {
         normalPrice: "—",
         dealID: g.cheapestDealID
     }));
+    if (games.length === 0) {
+    renderGames([], true);
+    noResults.classList.remove("hidden");
+    return;
+}
 
     renderGames(games, true);
+}finally{
+    spinner.classList.add("hidden");
+}
 });
 
-// Filtro por tienda
+
 storeFilter.addEventListener("change", async () => {
+    spinner.classList.remove("hidden");
+
     currentStore = storeFilter.value;
     page = 0;
     const games = await fetchDeals(0, currentStore);
     renderGames(games, true);
+    spinner.classList.add("hidden");
+
 });
 
-// Ordenar
+
 sortBy.addEventListener("change", async () => {
+    spinner.classList.remove("hidden");
+
     currentSort = sortBy.value;
     const games = await fetchDeals(0, currentStore);
     renderGames(sortGames(games, currentSort), true);
+    spinner.classList.add("hidden");
+
 });
 
-// Cargar más
+
 loadMoreBtn.addEventListener("click", async () => {
+    spinner.classList.remove("hidden");
+
     page++;
     const games = await fetchDeals(page, currentStore);
     renderGames(games);
+    spinner.classList.add("hidden");
+
 });
 
-// Abrir modal (Este listener ya no es necesario si usas onclick en la tarjeta, pero lo dejamos por si acaso)
+
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("viewDetail")) {
         const id = e.target.dataset.id;
         openModal(id);
     }
 });
-
-
-// CARGA INICIAL
-(async () => {
+ (async () => {
     const games = await fetchDeals();
     renderGames(games);
 })();
